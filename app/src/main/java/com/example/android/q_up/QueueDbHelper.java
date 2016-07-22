@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.example.android.q_up.QueueContract.QueueEntry;
 
 /**
@@ -41,7 +42,7 @@ public class QueueDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getAllNames(){
+    public Cursor getAllNames() {
         return getReadableDatabase().query(
                 QueueEntry.TABLE_NAME,
                 null,
@@ -53,11 +54,11 @@ public class QueueDbHelper extends SQLiteOpenHelper {
         );
     }
 
-    public long addNewPerson(String name, int party){
+    public long addNewPerson(String name, int party) {
         final SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(QueueEntry.COLUMN_NAME,name);
-        cv.put(QueueEntry.COLUMN_PARTY,party);
+        cv.put(QueueEntry.COLUMN_NAME, name);
+        cv.put(QueueEntry.COLUMN_PARTY, party);
         long _id = db.insert(QueueEntry.TABLE_NAME, null, cv);
         db.close();
         return _id;
