@@ -1,11 +1,11 @@
 package com.example.android.q_up;
 
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -14,23 +14,19 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
 
+    private static final String[] COLUMNS_TO_BE_BOUND = new String[]{
+            QueueContract.QueueEntry.COLUMN_NAME,
+            QueueContract.QueueEntry.COLUMN_PARTY
+    };
+    private static final int[] LAYOUT_ITEMS_TO_FILL = new int[]{
+            android.R.id.text1,
+            android.R.id.text2
+    };
     private ListView allGuestsListView;
     private TextView newGuestNameView;
     private TextView newPartyCountView;
     private SimpleCursorAdapter cursorAdapter;
     private QueueDbHelper db;
-
-
-    private static final String[] COLUMNS_TO_BE_BOUND  = new String[] {
-            QueueContract.QueueEntry.COLUMN_NAME,
-            QueueContract.QueueEntry.COLUMN_PARTY
-    };
-
-    private static final int[] LAYOUT_ITEMS_TO_FILL = new int[] {
-            android.R.id.text1,
-            android.R.id.text2
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +48,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         allGuestsListView.setAdapter(cursorAdapter);
 
 
-        getSupportLoaderManager().initLoader(0,null,this);
+        getSupportLoaderManager().initLoader(0, null, this);
 
     }
 
     public void addToQ(View view) {
         //insert in db
-        db.addNewPerson(newGuestNameView.getText().toString(),Integer.parseInt(newPartyCountView.getText().toString()));
+        db.addNewPerson(newGuestNameView.getText().toString(), Integer.parseInt(newPartyCountView.getText().toString()));
 
         //Do i need this ?
         cursorAdapter.notifyDataSetChanged();
@@ -71,11 +67,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        return new CursorLoader( this, null, null, null, null, null )
-        {
+        return new CursorLoader(this, null, null, null, null, null) {
             @Override
-            public Cursor loadInBackground()
-            {
+            public Cursor loadInBackground() {
                 return db.getAllNames();
             }
         };
@@ -83,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader loader, Object data) {
-        cursorAdapter.swapCursor((Cursor)data);
+        cursorAdapter.swapCursor((Cursor) data);
     }
 
     @Override

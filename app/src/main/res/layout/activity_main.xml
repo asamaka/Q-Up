@@ -10,43 +10,43 @@
     tools:context="com.example.android.q_up.MainActivity">
 
     <EditText
+        android:id="@+id/person_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:textSize="35dp"
-        android:id="@+id/person_name_text"
-        android:layout_toLeftOf="@+id/party_count_text"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/party_count_text"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="35dp" />
 
     <EditText
+        android:id="@+id/party_count_text"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:textSize="35dp"
-        android:id="@+id/party_count_text"
         android:layout_toLeftOf="@+id/q_button"
-        android:layout_toStartOf="@+id/q_button" />
+        android:layout_toStartOf="@+id/q_button"
+        android:ems="10"
+        android:inputType="number"
+        android:textSize="35dp" />
 
     <ListView
+        android:id="@+id/all_guests_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/all_guests_list"
         android:layout_below="@+id/person_name_text" />
 
     <Button
+        android:id="@+id/q_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+Q"
-        android:id="@+id/q_button"
-        android:onClick="addToQ"
         android:layout_above="@+id/all_guests_list"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="35dp"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="addToQ"
+        android:text="+Q"
+        android:textSize="35dp" />
 
 </RelativeLayout>
