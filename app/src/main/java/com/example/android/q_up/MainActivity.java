@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         db.addNewPerson(newGuestNameView.getText().toString(), Integer.parseInt(newPartyCountView.getText().toString()));
 
         //Do i need this ?
-        cursorAdapter.notifyDataSetChanged();
+        getSupportLoaderManager().restartLoader(0, null, this);
 
         //clear current data
         newGuestNameView.setText("");
