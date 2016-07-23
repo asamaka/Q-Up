@@ -1,4 +1,4 @@
-package com.example.android.q_up;
+package com.example.android.q_up.data;
 
 import android.provider.BaseColumns;
 
