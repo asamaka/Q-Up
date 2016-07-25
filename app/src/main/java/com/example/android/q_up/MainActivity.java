@@ -1,41 +1,23 @@
 package com.example.android.q_up;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.example.android.q_up.data.QueueContract;
 import com.example.android.q_up.data.QueueDbHelper;
 
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
+public class MainActivity extends AppCompatActivity {
 
-    private static final String[] COLUMNS_TO_BE_BOUND = new String[]{
-            QueueContract.QueueEntry._ID,
-            QueueContract.QueueEntry.COLUMN_NAME,
-            QueueContract.QueueEntry.COLUMN_PARTY
-    };
-    private static final int[] LAYOUT_ITEMS_TO_FILL = new int[]{
-            android.R.id.hint,
-            android.R.id.text1,
-            android.R.id.text2
-    };
     private ListView allGuestsListView;
     private TextView newGuestNameView;
     private TextView newPartyCountView;
     private GuestListAdapter cursorAdapter;
     private QueueDbHelper db;
-
 
 
     @Override
@@ -49,9 +31,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         allGuestsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                long myId = (long)view.getTag();
+                long myId = (long) view.getTag();
                 boolean success = db.removePerson(myId);
-                getSupportLoaderManager().restartLoader(0, null, (LoaderManager.LoaderCallbacks) view.getContext());
+                cursorAdapter.swapCursor(db.getAllNames());
                 return success;
             }
         });
@@ -63,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 0);
 
         allGuestsListView.setAdapter(cursorAdapter);
-        getSupportLoaderManager().initLoader(0, null, this);
 
+        cursorAdapter.swapCursor(db.getAllNames());
     }
 
     public void addToQ(View view) {
@@ -78,33 +60,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         db.addNewPerson(newGuestNameView.getText().toString(), party);
 
-        //Do i need this ?
-        getSupportLoaderManager().restartLoader(0, null, this);
+        cursorAdapter.swapCursor(db.getAllNames());
 
-        //clear current data
+        //clear UI
         newGuestNameView.setText("");
         newPartyCountView.setText("");
         newPartyCountView.clearFocus();
     }
 
-
-    @Override
-    public Loader onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, null, null, null, null, null) {
-            @Override
-            public Cursor loadInBackground() {
-                return db.getAllNames();
-            }
-        };
-    }
-
-    @Override
-    public void onLoadFinished(Loader loader, Object data) {
-        cursorAdapter.swapCursor((Cursor) data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
-        cursorAdapter.swapCursor(null);
-    }
 }
