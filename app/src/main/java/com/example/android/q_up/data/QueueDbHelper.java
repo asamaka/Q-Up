@@ -1,4 +1,4 @@
-package com.example.android.q_up;
+package com.example.android.q_up.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.android.q_up.QueueContract.QueueEntry;
+import com.example.android.q_up.data.QueueContract.QueueEntry;
 
 /**
  * Created by asser on 7/21/16.
@@ -60,7 +60,11 @@ public class QueueDbHelper extends SQLiteOpenHelper {
         cv.put(QueueEntry.COLUMN_NAME, name);
         cv.put(QueueEntry.COLUMN_PARTY, party);
         long _id = db.insert(QueueEntry.TABLE_NAME, null, cv);
-        db.close();
         return _id;
+    }
+
+    public boolean removePerson(long id) {
+        final SQLiteDatabase db = getWritableDatabase();
+        return db.delete(QueueEntry.TABLE_NAME, QueueEntry._ID + "=" + id, null) > 0;
     }
 }

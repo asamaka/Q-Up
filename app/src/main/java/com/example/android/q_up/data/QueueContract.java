@@ -1,4 +1,4 @@
-package com.example.android.q_up;
+package com.example.android.q_up.data;
 
 import android.provider.BaseColumns;
 
@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
  */
 public class QueueContract {
 
-    /* Inner class that defines the table contents of the weather table */
+    /* Inner class that defines the table contents of the queue table */
     public static final class QueueEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "queue";
