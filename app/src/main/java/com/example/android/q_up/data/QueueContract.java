@@ -7,6 +7,18 @@ import android.provider.BaseColumns;
  */
 public class QueueContract {
 
+    public static final String[] ALL_GUESTS_LIST_PROJECTION = new String[]{
+            QueueEntry._ID,
+            QueueEntry.COLUMN_NAME,
+            QueueEntry.COLUMN_PARTY
+    };
+
+    // these indices must match the projection
+    public static final int INDEX_QUEUE_ENTRY_ID = 0;
+    public static final int INDEX_QUEUE_ENTRY_NAME = 1;
+    public static final int INDEX_QUEUE_ENTRY_PARTY = 2;
+
+
     /* Inner class that defines the table contents of the queue table */
     public static final class QueueEntry implements BaseColumns {
 
@@ -15,9 +27,6 @@ public class QueueContract {
         public static final String COLUMN_NAME = "name";
 
         public static final String COLUMN_PARTY = "party";
-
-        //TODO: add this to the database when a new person is added
-        public static final String COLUMN_TIME = "time";
 
     }
 }

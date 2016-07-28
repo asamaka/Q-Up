@@ -43,7 +43,8 @@ public class QueueDbHelper extends SQLiteOpenHelper {
 
 
     public Cursor getAllNames() {
-        return getReadableDatabase().query(
+        SQLiteDatabase db =  getReadableDatabase();
+        Cursor cr = db.query(
                 QueueEntry.TABLE_NAME,
                 null,
                 null,
@@ -52,6 +53,9 @@ public class QueueDbHelper extends SQLiteOpenHelper {
                 null,
                 null
         );
+        if(db!=null)
+            db.close();
+        return cr;
     }
 
     public long addNewPerson(String name, int party) {
@@ -60,11 +64,16 @@ public class QueueDbHelper extends SQLiteOpenHelper {
         cv.put(QueueEntry.COLUMN_NAME, name);
         cv.put(QueueEntry.COLUMN_PARTY, party);
         long _id = db.insert(QueueEntry.TABLE_NAME, null, cv);
+        if(db!=null)
+            db.close();
         return _id;
     }
 
     public boolean removePerson(long id) {
         final SQLiteDatabase db = getWritableDatabase();
-        return db.delete(QueueEntry.TABLE_NAME, QueueEntry._ID + "=" + id, null) > 0;
+        int result =  db.delete(QueueEntry.TABLE_NAME, QueueEntry._ID + "=" + id, null);
+        if(db!=null)
+            db.close();
+        return result>0;
     }
 }
