@@ -2,6 +2,7 @@ package com.example.android.q_up;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +37,6 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
         long id = cursor.getLong(QueueContract.INDEX_QUEUE_ENTRY_ID);
         String name = cursor.getString(QueueContract.INDEX_QUEUE_ENTRY_NAME);
         int party = cursor.getInt(QueueContract.INDEX_QUEUE_ENTRY_PARTY);
-        Log.d("onBindViewHolder","id="+id+"name="+name+"party="+party);
         holder.itemView.setTag(id);
         holder.nameTextView.setText(name);
         holder.partyTextView.setText("(" + party + ")");

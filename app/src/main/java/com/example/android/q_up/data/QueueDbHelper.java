@@ -35,6 +35,7 @@ public class QueueDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_QUEUE_TABLE);
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + QueueEntry.TABLE_NAME);
@@ -42,38 +43,5 @@ public class QueueDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getAllNames() {
-        SQLiteDatabase db =  getReadableDatabase();
-        Cursor cr = db.query(
-                QueueEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        if(db!=null)
-            db.close();
-        return cr;
-    }
 
-    public long addNewPerson(String name, int party) {
-        final SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(QueueEntry.COLUMN_NAME, name);
-        cv.put(QueueEntry.COLUMN_PARTY, party);
-        long _id = db.insert(QueueEntry.TABLE_NAME, null, cv);
-        if(db!=null)
-            db.close();
-        return _id;
-    }
-
-    public boolean removePerson(long id) {
-        final SQLiteDatabase db = getWritableDatabase();
-        int result =  db.delete(QueueEntry.TABLE_NAME, QueueEntry._ID + "=" + id, null);
-        if(db!=null)
-            db.close();
-        return result>0;
-    }
 }
