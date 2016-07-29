@@ -6,10 +6,6 @@ import android.test.AndroidTestCase;
 
 import java.util.HashSet;
 
-/**
- * Created by asser on 7/27/16.
- */
-
 public class TestDb extends AndroidTestCase {
 
     void deleteTheDatabase(){
