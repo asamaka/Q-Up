@@ -6,13 +6,9 @@ import android.test.AndroidTestCase;
 
 import java.util.HashSet;
 
-/**
- * Created by asser on 7/27/16.
- */
-
 public class TestDb extends AndroidTestCase {
 
-    void deleteTheDatabase(){
+    void deleteTheDatabase() {
         mContext.deleteDatabase(QueueContract.QueueEntry.TABLE_NAME);
     }
 
@@ -37,8 +33,8 @@ public class TestDb extends AndroidTestCase {
 
         // have we created the tables we want?
         boolean tableFound = false;
-        do{
-            if(QueueContract.QueueEntry.TABLE_NAME.equals(c.getString(0)))
+        do {
+            if (QueueContract.QueueEntry.TABLE_NAME.equals(c.getString(0)))
                 tableFound = true;
         } while (c.moveToNext());
         // if this fails, it means that your database doesn't contain the table
@@ -67,6 +63,7 @@ public class TestDb extends AndroidTestCase {
         // if this fails, it means that your database doesn't contain all of the required columns
         assertTrue("Error: The database doesn't contain all of the required columns",
                 columnHashSet.isEmpty());
+        c.close();
         db.close();
     }
 
