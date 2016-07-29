@@ -2,44 +2,95 @@ package com.example.android.q_up;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.example.android.q_up.data.QueueContract;
 
-/**
- * Created by asser on 7/22/16.
- */
 
-public class GuestListAdapter extends CursorAdapter{
+public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.GuestViewHolder> {
 
-    public GuestListAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+    // Holds on to the query result to display the guest list
+    private Cursor cursor;
+
+    // Constructor
+    public GuestListAdapter(Cursor cursor) {
+        this.cursor = cursor;
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        View view = LayoutInflater.from(context).inflate(R.layout.guest_list_item, viewGroup, false);
-        return view;
+    public GuestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // Get the recyclerview item layout
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.guest_list_item, parent, false);
+        return new GuestViewHolder(view);
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void onBindViewHolder(GuestViewHolder holder, int position) {
+        // Move the cursor to the position of the item to be displayed
+        if (!cursor.moveToPosition(position))
+            return; // bail if returned null
+        // Update the view holder with the information needed to display
+        long id = cursor.getLong(QueueContract.INDEX_QUEUE_ENTRY_ID);
+        String name = cursor.getString(QueueContract.INDEX_QUEUE_ENTRY_NAME);
+        int party = cursor.getInt(QueueContract.INDEX_QUEUE_ENTRY_PARTY);
+        // Set the tag to be the DB id so we can delete
+        holder.itemView.setTag(id);
+        // Display the guest name
+        holder.nameTextView.setText(name);
+        // Display the party count between ()
+        holder.partyTextView.setText("(" + party + ")");
+    }
 
-        //is there a better pattern to do this lookup ?
-        long id = cursor.getLong(cursor.getColumnIndex(QueueContract.QueueEntry._ID));
-        String name = cursor.getString(cursor.getColumnIndex(QueueContract.QueueEntry.COLUMN_NAME));
-        int party = cursor.getInt(cursor.getColumnIndex(QueueContract.QueueEntry.COLUMN_PARTY));
 
-        TextView nameTextView = (TextView) view.findViewById(R.id.name_text_view);
-        TextView partyTextView = (TextView) view.findViewById(R.id.party_text_view);
+    @Override
+    public int getItemCount() {
+        return cursor.getCount();
+    }
 
-        view.setTag(id);
-        nameTextView.setText(name);
-        partyTextView.setText("("+party+")");
+    /**
+     * Swaps the cursor currently held in the adapter with a new one
+     * and triggers a UI refresh
+     *
+     * @param newCursor
+     */
+    public void swapCursor(Cursor newCursor) {
+        // Always close the previous cursor first
+        if (cursor != null)
+            cursor.close();
+        cursor = newCursor;
+        // Force the recyclerview to refresh
+        this.notifyDataSetChanged();
+    }
+
+
+    /**
+     * Inner class to hold the views needed to display a single item in the recyvlerview
+     */
+    class GuestViewHolder extends RecyclerView.ViewHolder {
+
+        // Will display the guest name
+        TextView nameTextView;
+        // Will display the party number
+        TextView partyTextView;
+
+        /**
+         * Constructor for our ViewHolder. Within this constructor, we get a reference to our
+         * TextViews
+         *
+         * @param itemView The View that you inflated in
+         *                 {@link GuestListAdapter#onCreateViewHolder(ViewGroup, int)}
+         */
+        public GuestViewHolder(View itemView) {
+            super(itemView);
+            nameTextView = (TextView) itemView.findViewById(R.id.name_text_view);
+            partyTextView = (TextView) itemView.findViewById(R.id.party_text_view);
+        }
 
     }
 }
