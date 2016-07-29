@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = getAllNames();
 
         // Create an adapter for that cursor to display the data
-        cursorAdapter = new GuestListAdapter(cursor);
+        cursorAdapter = new GuestListAdapter(this, cursor);
 
         // Link the adapter to the recyclerview
         allGuestsListView.setAdapter(cursorAdapter);

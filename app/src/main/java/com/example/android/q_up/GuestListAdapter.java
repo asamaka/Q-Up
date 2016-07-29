@@ -16,8 +16,11 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
     // Holds on to the query result to display the guest list
     private Cursor cursor;
 
+    private Context context;
+
     // Constructor
-    public GuestListAdapter(Cursor cursor) {
+    public GuestListAdapter(Context context, Cursor cursor) {
+        this.context = context;
         this.cursor = cursor;
     }
 
@@ -44,7 +47,7 @@ public class GuestListAdapter extends RecyclerView.Adapter<GuestListAdapter.Gues
         // Display the guest name
         holder.nameTextView.setText(name);
         // Display the party count between ()
-        holder.partyTextView.setText("(" + party + ")");
+        holder.partyTextView.setText(context.getString(R.string.party_display, party));
     }
 
 
